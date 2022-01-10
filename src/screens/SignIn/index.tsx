@@ -1,6 +1,7 @@
-import React from 'react';
-import { KeyboardAvoidingView, Platform } from 'react-native';
+import React, { useState } from 'react';
+import { KeyboardAvoidingView, Platform, Text } from 'react-native';
 
+import { useAuth } from '@hooks/auth';
 import { Input } from '@components/Input';
 import { Button } from '@components/Button';
 
@@ -14,8 +15,18 @@ import {
   ForgotPassordLabel,
   ForgotPasswordButton
 } from './styles';
+import { RectButton } from 'react-native-gesture-handler';
 
 export function SignIn() {
+  const [ email, setEmail ] = useState<string>("");
+  const [ password, setPassword ] = useState<string>("");
+
+  const { signIn, isLogging } = useAuth();
+  
+  function handleSignIn() {
+    signIn(email, password);
+  };
+
   return (
     <Container>
       <KeyboardAvoidingView
@@ -33,11 +44,13 @@ export function SignIn() {
             type='secondary'
             autoCorrect={false}
             autoCapitalize='none'
+            onChangeText={setEmail}
           />
           <Input
             placeholder='Senha'
             type='secondary'
             secureTextEntry
+            onChangeText={setPassword}
           />
 
           <ForgotPasswordButton>
@@ -49,8 +62,9 @@ export function SignIn() {
           <Button
             title='Entrar'
             type='secondary'
+            onPress={handleSignIn}
+            isLoading={isLogging}
           />
-
         </Content>
       </KeyboardAvoidingView>
     </Container>

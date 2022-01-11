@@ -2,24 +2,41 @@ import React, {
   createContext,
   useContext,
   useState,
-  ReactNode
+  ReactNode,
+  useEffect
 } from 'react';
 import { Alert } from 'react-native';
 import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+type User = {
+  id: string;
+  name: string;
+  isAdmin: boolean;
+};
 
 type AuthContextData = {
   signIn: (email: string, password: string) => Promise<void>;
   isLogging: boolean;
+  user: User | null;
 };
 
 type AuthProviderProps = {
   children: ReactNode;
 };
 
+const USER_COLLECTION = '@gopizza:users';
+
 export const AuthContext = createContext({} as AuthContextData);
 
 function AuthProvider({ children }: AuthProviderProps) {
+  const [ user, setUser ] = useState<User | null>(null);
   const [ isLogging, setIsLogging ] = useState<boolean>(false);
+
+  useEffect(() => {
+    loadUserStorageData();
+  }, []);
 
   async function signIn(email: string, password: string) {
     if ( !email || !password ) {
@@ -31,7 +48,25 @@ function AuthProvider({ children }: AuthProviderProps) {
     auth()
     .signInWithEmailAndPassword(email, password)
     .then(account => {
-      console.log(account);
+      firestore()
+      .collection('users')
+      .doc(account.user.uid)
+      .get()
+      .then(async (profile) => {
+        const { name, isAdmin } = profile.data() as User;
+
+        if ( profile.exists ) {
+          const userData = {
+            id: account.user.uid,
+            name,
+            isAdmin
+          };
+
+          await AsyncStorage.setItem(USER_COLLECTION, JSON.stringify(userData));
+          setUser(userData);
+        };
+      })
+      .catch(() => Alert.alert('Login', 'Não foi possível buscar os dados de perfil do usuário.'));
     })
     .catch(error => {
       const { code } = error;
@@ -45,10 +80,25 @@ function AuthProvider({ children }: AuthProviderProps) {
     .finally(() => setIsLogging(false));
   };
 
+  async function loadUserStorageData() {
+    setIsLogging(true);
+
+    const storedUser = await AsyncStorage.getItem(USER_COLLECTION);
+    
+    if ( storedUser ) {
+      const userData = JSON.parse(storedUser) as User;
+      console.log(userData);
+      setUser(userData);
+    };
+
+    setIsLogging(false);
+  };
+
   return (
     <AuthContext.Provider value={{
       signIn,
-      isLogging
+      isLogging,
+      user
     }}>
       {children}
     </AuthContext.Provider>

@@ -15,7 +15,6 @@ import {
   ForgotPassordLabel,
   ForgotPasswordButton
 } from './styles';
-import { RectButton } from 'react-native-gesture-handler';
 
 export function SignIn() {
   const [ email, setEmail ] = useState<string>("");

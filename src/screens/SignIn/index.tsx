@@ -20,10 +20,14 @@ export function SignIn() {
   const [ email, setEmail ] = useState<string>("");
   const [ password, setPassword ] = useState<string>("");
 
-  const { signIn, isLogging } = useAuth();
+  const { signIn, forgotPassword, isLogging } = useAuth();
   
   function handleSignIn() {
     signIn(email, password);
+  };
+
+  function handleForgotPassword() {
+    forgotPassword(email);
   };
 
   return (
@@ -52,7 +56,7 @@ export function SignIn() {
             onChangeText={setPassword}
           />
 
-          <ForgotPasswordButton>
+          <ForgotPasswordButton onPress={handleForgotPassword}>
             <ForgotPassordLabel>
               Esqueci minha senha
             </ForgotPassordLabel>

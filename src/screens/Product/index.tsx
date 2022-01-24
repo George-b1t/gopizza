@@ -1,7 +1,15 @@
-import { Container, DeleteLabel, Header, Title } from './styles';
 import { Platform, TouchableOpacity } from 'react-native';
 import { ButtonBack } from '@components/ButtonBack';
 import { Photo } from '@components/Photo';
+
+import {
+  Container,
+  DeleteLabel,
+  Header,
+  Title,
+  PickImageButton,
+  Upload
+} from './styles';
 
 export function Product() {
   return (
@@ -16,7 +24,10 @@ export function Product() {
 
       </Header>
 
-      <Photo uri='https://github.com/George-b1t.png' />
+      <Upload>
+        <Photo uri='https://github.com/George-b1t.png' />
+        <PickImageButton title='Carregar' type='secondary' />
+      </Upload>
 
     </Container>
   );

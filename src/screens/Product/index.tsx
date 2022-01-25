@@ -13,6 +13,7 @@ import {
   Upload
 } from './styles';
 import { useState } from 'react';
+import { InputPrice } from '@components/InputPrice';
 
 export function Product() {
   const [ image, setImage ] = useState("");
@@ -52,6 +53,10 @@ export function Product() {
           onPress={handlePickerImage}
         />
       </Upload>
+
+      <InputPrice size='P' />
+      <InputPrice size='M' />
+      <InputPrice size='G' />
 
     </Container>
   );

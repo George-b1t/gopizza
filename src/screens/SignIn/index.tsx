@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { KeyboardAvoidingView, Platform, Text } from 'react-native';
+import { KeyboardAvoidingView, Platform } from 'react-native';
 
 import { useAuth } from '@hooks/auth';
 import { Input } from '@components/Input';

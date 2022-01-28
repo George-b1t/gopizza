@@ -5,6 +5,7 @@ import { TouchableOpacity } from 'react-native';
 
 import happyEmoji from '@assets/happy.png';
 import { Search } from '@components/Search';
+import { ProductCard } from '@components/ProductCard';
 
 import {
   Container,
@@ -32,11 +33,21 @@ export function Home() {
           <MaterialIcons name='logout' color={COLORS.TITLE} size={24} />
         </TouchableOpacity>
       </Header>
+      
       <Search onSearch={() => {}} onClear={() => {}} />
+      
       <MenuHeader>
         <Title>Cardápio</Title>
         <MenuItemsNumber>10 pizzas</MenuItemsNumber>
       </MenuHeader>
+      
+      <ProductCard data={{
+          id: '1',
+          name: 'Pizza',
+          description: 'Descrição referente à piza, lorem ipsum dolor sit amet consectetur.',
+          photo_url: 'https://github.com/George-b1t.png'
+        }}
+      />
     </Container>
   );
 };

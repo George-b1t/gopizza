@@ -10,6 +10,7 @@ import { AuthProvider } from '@hooks/auth';
 import { Home } from '@screens/Home';
 
 import theme from './src/theme';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 export default function App() {
   const [ fontsLoaded ] = useFonts({
@@ -25,7 +26,9 @@ export default function App() {
     <ThemeProvider theme={theme}>
       <StatusBar style='light' translucent backgroundColor='transparent' />
       <AuthProvider>
-        <Home />
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          <Home />
+        </GestureHandlerRootView>
       </AuthProvider>
     </ThemeProvider>
   );

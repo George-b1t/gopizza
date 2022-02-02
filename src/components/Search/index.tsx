@@ -1,5 +1,5 @@
 import React from 'react';
-import { TextInputProps } from 'react-native';
+import { ActivityIndicator, TextInputProps } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { useTheme } from 'styled-components';
 
@@ -8,15 +8,17 @@ import {
   Button,
   ButtonClear,
   Input,
-  InputArea
+  InputArea,
+  Load
 } from './styles';
 
 type Props = TextInputProps & {
   onSearch: () => void;
   onClear: () => void;
+  isLoading: boolean;
 };
 
-export function Search({ onClear, onSearch, ...rest }: Props) {
+export function Search({ onClear, onSearch, isLoading, ...rest }: Props) {
   const { COLORS } = useTheme();
 
   return (
@@ -28,7 +30,13 @@ export function Search({ onClear, onSearch, ...rest }: Props) {
         </ButtonClear>
       </InputArea>
       <Button onPress={onSearch}>
-        <Feather name='search' size={16} color={COLORS.TITLE} />
+        {
+          isLoading ? (
+            <Load />
+          ) : (
+            <Feather name='search' size={16} color={COLORS.TITLE} />
+          )
+        }
       </Button>
     </Container>
   );

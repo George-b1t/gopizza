@@ -27,12 +27,16 @@ export function Home() {
   const [ pizzas, setPizzas ] = useState<ProductProps[]>([]);
   const [ search, setSearch ] = useState("");
 
+  const [ isSearching, setIsSearching ] = useState(false);
+
   const navigation = useNavigation();
 
   const { COLORS } = useTheme();
 
   function fetchPizzas(value: string) {
     const formattedValue = value.toLocaleLowerCase().trim();
+
+    setIsSearching(true);
 
     firestore()
     .collection('pizzas')
@@ -51,6 +55,7 @@ export function Home() {
       setPizzas(data);
     })
     .catch(() => Alert.alert('Consulta', 'Não foi possível realizar a consulta.'))
+    .finally(() => setIsSearching(false));
   };
 
   function handleSearch() {
@@ -88,6 +93,7 @@ export function Home() {
       </Header>
       
       <Search
+        isLoading={isSearching}
         onChangeText={setSearch}
         value={search}
         onSearch={handleSearch}
@@ -96,7 +102,7 @@ export function Home() {
       
       <MenuHeader>
         <Title>Cardápio</Title>
-        <MenuItemsNumber>10 pizzas</MenuItemsNumber>
+        <MenuItemsNumber>{pizzas.length} pizzas</MenuItemsNumber>
       </MenuHeader>
 
       <FlatList

@@ -33,6 +33,10 @@ export const ButtonClear = styled.TouchableOpacity`
   margin-right: 7px;
 `;
 
+export const Load = styled.ActivityIndicator.attrs({
+  color: '#FFF'
+})``;
+
 export const Button = styled(RectButton)`
   width: 52px;
   height: 52px;

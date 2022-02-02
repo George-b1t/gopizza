@@ -229,7 +229,7 @@ export function Product() {
       <Header>
         <ButtonBack onPress={handleGoBack} />
 
-        <Title>{id ? "Atualizar" : "Cadastrar"}</Title>
+        <Title>Cadastrar</Title>
 
         {
           id ? (

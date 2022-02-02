@@ -86,6 +86,10 @@ export const Load = styled.ActivityIndicator.attrs(({ theme }) => ({
   color: theme.COLORS.PRIMARY_800
 }))``;
 
+export const WhiteLoad = styled.ActivityIndicator.attrs(({ theme }) => ({
+  color: theme.COLORS.TITLE
+}))``;
+
 export const Header = styled(LinearGradient).attrs(({ theme }) => ({
   colors: theme.COLORS.GRADIENT
 }))`

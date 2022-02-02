@@ -27,7 +27,8 @@ import {
   Label,
   MaxCharacters,
   Load,
-  LoadContainer
+  LoadContainer,
+  WhiteLoad
 } from './styles';
 
 import { ProductProps } from '@components/ProductCard';
@@ -60,8 +61,10 @@ export function Product() {
   const [ priceSizeP, setPriceSizeP ] = useState("");
   const [ priceSizeM, setPriceSizeM ] = useState("");
   const [ priceSizeG, setPriceSizeG ] = useState("");
+
   const [ isLoading, setIsLoading ] = useState(false);
   const [ isSearching, setIsSearching ] = useState(false);
+  const [ isDeleting, setIsDeleting ] = useState(false);
 
   const navigation = useNavigation();
   const route = useRoute();
@@ -122,7 +125,10 @@ export function Product() {
       photo_url,
       photo_path: reference.fullPath
     })
-    .then(() => Alert.alert('Cadastro', 'Pizza cadastrada com sucesso.'))
+    .then(() => {
+      Alert.alert('Cadastro', 'Pizza cadastrada com sucesso.');
+      navigation.navigate('home');
+    })
     .catch(() => Alert.alert('Cadastro', 'Não foi possível cadastrar a pizza'))
     .finally(() => setIsLoading(false));
   };
@@ -162,8 +168,7 @@ export function Product() {
     };
 
     if ( image != cacheImage ) {
-      const referenceToDelete = storage().ref(photoPath);
-      await referenceToDelete.delete();
+      await storage().ref(photoPath).delete();
 
       const fileName = new Date().getTime();
       const reference = storage().ref(`/pizzas/${fileName}.png`);
@@ -182,12 +187,31 @@ export function Product() {
     .collection('pizzas')
     .doc(id)
     .update(data)
-    .then(async () => {
+    .then(() => {
       Alert.alert('Cadastro', 'Pizza atualizada com sucesso.');
       navigation.navigate('home');
     })
     .catch(() => Alert.alert('Cadastro', 'Não foi possível atualizar a pizza'))
     .finally(() => setIsLoading(false));
+  };
+
+  async function handleDelete() {
+    setIsDeleting(true);
+
+    await storage()
+    .ref(photoPath)
+    .delete();
+
+    firestore()
+    .collection("pizzas")
+    .doc(id)
+    .delete()
+    .then(() => {
+      Alert.alert('Cadastro', 'Pizza removida com sucesso.');
+      navigation.navigate('home');
+    })
+    .catch(() => Alert.alert('Cadastro', 'Não foi possível remover a pizza'))
+    .finally(() => setIsDeleting(false));
   };
 
   function handleGoBack() {
@@ -233,11 +257,16 @@ export function Product() {
 
         {
           id ? (
-            <TouchableOpacity>
-              <DeleteLabel>Deletar</DeleteLabel>
+            <TouchableOpacity
+              onPress={handleDelete}
+              style={{ width: 47 }}
+            >
+              {isDeleting ? <WhiteLoad /> : (
+                <DeleteLabel>Deletar</DeleteLabel>
+              ) }
             </TouchableOpacity>
           ) : (
-            <View style={{ width: 45 }} />
+            <View style={{ width: 47 }} />
           )
         }
         

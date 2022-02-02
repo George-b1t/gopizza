@@ -16,7 +16,8 @@ import {
   GreetingText,
   MenuHeader,
   MenuItemsNumber,
-  Title
+  Title,
+  NewProductButton
 } from './styles';
 import { useNavigation } from '@react-navigation/native';
 
@@ -63,6 +64,10 @@ export function Home() {
     navigation.navigate('product', { id });
   };
 
+  function handleAdd() {
+    navigation.navigate('product', {});
+  };
+
   useEffect(() => {
     fetchPizzas('');
   }, []);
@@ -107,6 +112,12 @@ export function Home() {
           paddingBottom: 125,
           marginHorizontal: 24
         }}
+      />
+
+      <NewProductButton
+        title='Criar'
+        type='secondary'
+        onPress={handleAdd}
       />
     </Container>
   );

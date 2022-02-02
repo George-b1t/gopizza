@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Platform, TouchableOpacity, ScrollView, Alert } from 'react-native';
+import { Platform, TouchableOpacity, ScrollView, Alert, View } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
@@ -114,7 +114,7 @@ export function Product() {
     setIsLoading(false);
   };
 
-  function handleBack() {
+  function handleGoBack() {
     navigation.goBack();
   };
 
@@ -141,24 +141,35 @@ export function Product() {
   return (
     <Container behavior={Platform.OS === 'ios' ? "padding" : undefined}>
       <Header>
-        <ButtonBack onPress={handleBack} />
+        <ButtonBack onPress={handleGoBack} />
 
         <Title>Cadastrar</Title>
 
-        <TouchableOpacity>
-          <DeleteLabel>Deletar</DeleteLabel>
-        </TouchableOpacity>
+        {
+          id ? (
+            <TouchableOpacity>
+              <DeleteLabel>Deletar</DeleteLabel>
+            </TouchableOpacity>
+          ) : (
+            <View style={{ width: 45 }} />
+          )
+        }
+        
       </Header>
 
       <ScrollView showsVerticalScrollIndicator={false}>
 
         <Upload>
           <Photo uri={image} />
-          <PickImageButton
-            title='Carregar'
-            type='secondary'
-            onPress={handlePickerImage}
-          />
+          {
+            !id && (
+              <PickImageButton
+                title='Carregar'
+                type='secondary'
+                onPress={handlePickerImage}
+              />
+            )
+          }
         </Upload>
 
         <Form>
@@ -207,11 +218,16 @@ export function Product() {
             
           </InputGroup>
 
-          <Button
-            title='Cadastrar pizza'
-            isLoading={isLoading}
-            onPress={handleAdd}
-          />
+          {
+            !id && (
+              <Button
+                title='Cadastrar pizza'
+                isLoading={isLoading}
+                onPress={handleAdd}
+              />
+            )
+          }
+          
         </Form>
 
       </ScrollView>

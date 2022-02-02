@@ -4,11 +4,15 @@ import * as ImagePicker from 'expo-image-picker';
 import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
 
+import { useNavigation, useRoute } from '@react-navigation/native';
+
 import { ButtonBack } from '@components/ButtonBack';
 import { Photo } from '@components/Photo';
 import { InputPrice } from '@components/InputPrice';
 import { Input } from '@components/Input';
 import { Button } from '@components/Button';
+
+import { ProductNavigationProps } from '@src/@types/navigation';
 
 import {
   Container,
@@ -32,6 +36,11 @@ export function Product() {
   const [ priceSizeM, setPriceSizeM ] = useState("");
   const [ priceSizeG, setPriceSizeG ] = useState("");
   const [ isLoading, setIsLoading ] = useState(false);
+
+  const navigation = useNavigation();
+  const route = useRoute();
+
+  const { id } = route.params as ProductNavigationProps;
 
   async function handlePickerImage() {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -93,10 +102,14 @@ export function Product() {
     setIsLoading(false);
   };
 
+  function handleBack() {
+    navigation.goBack();
+  };
+
   return (
     <Container behavior={Platform.OS === 'ios' ? "padding" : undefined}>
       <Header>
-        <ButtonBack />
+        <ButtonBack onPress={handleBack} />
 
         <Title>Cadastrar</Title>
 

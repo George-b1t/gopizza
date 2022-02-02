@@ -88,7 +88,9 @@ export function Home() {
       <FlatList
         data={pizzas}
         keyExtractor={item => item.id}
-        renderItem={({ item }) => <ProductCard data={item} />}
+        renderItem={({ item }) => (
+          <ProductCard data={item} />
+        )}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{
           paddingTop: 20,

@@ -3,6 +3,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { useTheme } from 'styled-components';
 import { Alert, FlatList, TouchableOpacity } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 
 import happyEmoji from '@assets/happy.png';
 import { Search } from '@components/Search';
@@ -19,9 +20,10 @@ import {
   Title,
   NewProductButton
 } from './styles';
-import { useNavigation } from '@react-navigation/native';
 
 export function Home() {
+  const isFocused = useIsFocused();
+
   const [ pizzas, setPizzas ] = useState<ProductProps[]>([]);
   const [ search, setSearch ] = useState("");
 
@@ -70,7 +72,7 @@ export function Home() {
 
   useEffect(() => {
     fetchPizzas('');
-  }, []);
+  }, [isFocused]);
 
   return (
     <Container>

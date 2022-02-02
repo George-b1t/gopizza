@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Platform, TouchableOpacity, ScrollView, Alert } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import firestore from '@react-native-firebase/firestore';
@@ -28,7 +28,19 @@ import {
   MaxCharacters
 } from './styles';
 
+import { ProductProps } from '@components/ProductCard';
+
+type PizzaResponse = ProductProps & {
+  photo_path: string;
+  prices_sizes: {
+    p: string;
+    m: string;
+    g: string;
+  };
+};
+
 export function Product() {
+  const [ photoPath, setPhotoPath ] = useState("");
   const [ image, setImage ] = useState("");
   const [ name, setName ] = useState("");
   const [ description, setDescription ] = useState("");
@@ -105,6 +117,26 @@ export function Product() {
   function handleBack() {
     navigation.goBack();
   };
+
+  useEffect(() => {
+    if ( id ) {
+      firestore()
+      .collection('pizzas')
+      .doc(id)
+      .get()
+      .then(response => {
+        const product = response.data() as PizzaResponse;
+
+        setName(product.name);
+        setImage(product.photo_url);
+        setDescription(product.description);
+        setPriceSizeP(product.prices_sizes.p);
+        setPriceSizeM(product.prices_sizes.m);
+        setPriceSizeG(product.prices_sizes.g);
+        setPhotoPath(product.photo_path);
+      });
+    };
+  }, [id]);
 
   return (
     <Container behavior={Platform.OS === 'ios' ? "padding" : undefined}>

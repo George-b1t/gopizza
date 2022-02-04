@@ -117,7 +117,7 @@ export function Home() {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{
           paddingTop: 20,
-          paddingBottom: 125,
+          paddingBottom: 20,
           marginHorizontal: 24
         }}
       />

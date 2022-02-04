@@ -126,11 +126,14 @@ export function Product() {
       photo_path: reference.fullPath
     })
     .then(() => {
+      setIsLoading(false);
       Alert.alert('Cadastro', 'Pizza cadastrada com sucesso.');
       navigation.navigate('home');
     })
-    .catch(() => Alert.alert('Cadastro', 'Não foi possível cadastrar a pizza'))
-    .finally(() => setIsLoading(false));
+    .catch(() => {
+      setIsLoading(false);
+      Alert.alert('Cadastro', 'Não foi possível cadastrar a pizza');
+    });
   };
 
   async function handleUpdate() {
@@ -188,11 +191,14 @@ export function Product() {
     .doc(id)
     .update(data)
     .then(() => {
+      setIsLoading(false);
       Alert.alert('Cadastro', 'Pizza atualizada com sucesso.');
       navigation.navigate('home');
     })
-    .catch(() => Alert.alert('Cadastro', 'Não foi possível atualizar a pizza'))
-    .finally(() => setIsLoading(false));
+    .catch(() => {
+      setIsLoading(false);
+      Alert.alert('Cadastro', 'Não foi possível atualizar a pizza');
+    });
   };
 
   async function handleDelete() {

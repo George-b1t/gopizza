@@ -27,7 +27,7 @@ export default function App() {
       <StatusBar style='light' translucent backgroundColor='transparent' />
       <AuthProvider>
         <GestureHandlerRootView style={{ flex: 1 }}>
-          <Orders />
+          <Routes />
         </GestureHandlerRootView>
       </AuthProvider>
     </ThemeProvider>

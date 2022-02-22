@@ -6,6 +6,8 @@ import firestore from '@react-native-firebase/firestore';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 
 import happyEmoji from '@assets/happy.png';
+
+import { useAuth } from '@hooks/auth';
 import { Search } from '@components/Search';
 import { ProductCard, ProductProps } from '@components/ProductCard';
 
@@ -23,6 +25,8 @@ import {
 
 export function Home() {
   const isFocused = useIsFocused();
+
+  const { user, signOut } = useAuth();
 
   const [ pizzas, setPizzas ] = useState<ProductProps[]>([]);
   const [ search, setSearch ] = useState("");
@@ -87,7 +91,7 @@ export function Home() {
           <GreetingText>Olá, Admin</GreetingText>
         </Greeting>
 
-        <TouchableOpacity>
+        <TouchableOpacity onPress={signOut}>
           <MaterialIcons name='logout' color={COLORS.TITLE} size={24} />
         </TouchableOpacity>
       </Header>
@@ -122,11 +126,13 @@ export function Home() {
         }}
       />
 
-      <NewProductButton
-        title='Criar'
-        type='secondary'
-        onPress={handleAdd}
-      />
+      {
+        user?.isAdmin && <NewProductButton
+          title='Criar'
+          type='secondary'
+          onPress={handleAdd}
+        />
+      }
     </Container>
   );
 };

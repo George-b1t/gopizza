@@ -1,5 +1,5 @@
 import React from 'react';
-import { ActivityIndicator, TextInputProps } from 'react-native';
+import { TextInputProps } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { useTheme } from 'styled-components';
 

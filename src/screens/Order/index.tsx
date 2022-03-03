@@ -34,12 +34,16 @@ type PizzaResponse = ProductProps & {
 }
 
 export function Order() {
-  const [ size, setSize ] = useState('');
+  const [ size, setSize ] = useState('p');
   const [ pizza, setPizza ] = useState<PizzaResponse>({} as PizzaResponse);
+  const [ quantity, setQuantity ] = useState("1");
+  const [ tableNumber, setTableNumber ] = useState("");
 
   const navigation = useNavigation();
   const route = useRoute();
   const { id } = route.params as OrderNavigationProps;
+
+  const amount = size && pizza.name ? pizza.prices_sizes[size] * Number(quantity) : "0,00";
 
   function handleGoBack() {
     navigation.goBack();
@@ -88,16 +92,23 @@ export function Order() {
           <FormRow>
             <InputGroup>
               <Label>Número da mesa</Label>
-              <Input keyboardType='numeric' />
+              <Input
+                keyboardType='numeric'
+                onChangeText={setTableNumber}
+              />
             </InputGroup>
 
             <InputGroup>
               <Label>Quantidade</Label>
-              <Input keyboardType='numeric' />
+              <Input
+                value={quantity}
+                onChangeText={setQuantity}
+                keyboardType='numeric'
+              />
             </InputGroup>
           </FormRow>
 
-          <Price>Valor de R$ 00,00</Price>
+          <Price>Valor de R$ {amount}</Price>
 
           <Button title='Confirmar pedido' />
         </Form>

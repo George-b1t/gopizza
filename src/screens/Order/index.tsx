@@ -71,7 +71,7 @@ export function Order() {
       .add({
         quantity,
         amount,
-        pizza,
+        pizza: pizza.name,
         size,
         table_number: tableNumber,
         status: 'Preparando',

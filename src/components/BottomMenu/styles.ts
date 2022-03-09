@@ -43,9 +43,8 @@ export const Notification = styled.View<NotificationProps>`
 export const Quantity = styled.Text<NotificationProps>`
   font-size: 12px;
 
-  ${({ noNotifications, theme }) => noNotifications && css`
+  ${({ noNotifications, theme }) => !noNotifications && css`
     font-family: ${theme.FONTS.TEXT};
     color: ${noNotifications ? theme.COLORS.SECONDARY_500 : theme.COLORS.TITLE};
-    border: 1px solid ${theme.COLORS.SHAPE};
   `};
 `;
